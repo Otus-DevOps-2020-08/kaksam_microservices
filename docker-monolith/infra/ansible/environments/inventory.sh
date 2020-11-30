@@ -1,50 +1,33 @@
 #!/bin/bash
 
-if [ "$1" = "--list" ]; then
-#    cd ../terraform/stage > /dev/null
-#    APP_IP=$(terraform show | grep external_ip_address_app | sed 's/\x1b\[[0-9;]*[a-zA-Z]//g' |awk '{print $3}'|  tr -d \")
-#    DB_IP=$(terraform show | grep external_ip_address_db | sed 's/\x1b\[[0-9;]*[a-zA-Z]//g' |awk '{print $3}'|  tr -d \")
-    APP_IP=$(yc compute instance list | grep reddit-app-prod |awk '{print $10}')
-    DB_IP=$(yc compute instance list | grep reddit-db-prod | awk '{print $10}')
-    DB_INT_IP=$(yc compute instance list | grep reddit-db-prod | awk '{print $12}')
-#    cd - > /dev/null
-    cat << _EOF_
-    {
-        "_meta": {
-            "hostvars": {
-                "appserver": {
-                    "ansible_host": "${APP_IP}"
-                },
-                "dbserver": {
-                    "ansible_host": "${DB_IP}",
-                    "db_host": "${DB_INT_IP}"
-                }
-            }
-        },
-        "app": {
-            "hosts": [
-                "appserver"
-            ]
-        },
-        "db": {
-            "hosts": [
-                "dbserver"
-            ]
-        }
-    }
-_EOF_
-else
-    cat << _EOF_
-    {
-        "_meta": {
-                "hostvars": {}
-        },
-        "all": {
-                "children": [
-                        "ungrouped"
-                ]
-        },
-        "ungrouped": {}
-    }
-_EOF_
-fi
+show_help() {
+    printf "usage: inventory.sh --list %s\n
+This script, when run with the --list option, sends ansible inventory in JSON format to STDOUT. %s\n"
+}
+
+gen_json_inventory() {
+    cat << EOF > /tmp/inventory_ini_format.tmp
+[docker]
+EOF
+    yc compute instance list | awk '/docker-app/ {print $4 " " "ansible_host="$10}' >> /tmp/inventory_ini_format.tmp
+    ansible-inventory -i /tmp/inventory_ini_format.tmp --list
+    rm /tmp/inventory_ini_format.tmp
+}
+
+case $1 in
+    -h|--help)
+        show_help
+        exit
+        ;;
+    --list)
+        gen_json_inventory
+        exit
+        ;;
+    -?*)
+        printf 'WARN: Unknown option (ignored): %s\n' "$1" >&2
+        ;;
+    *)
+        printf "Dynamic inventory for OTUS DevOps homeworks.
+This script, when run with the --list option, sends ansible inventory in JSON format to STDOUT. %s\n"
+        ;;
+esac

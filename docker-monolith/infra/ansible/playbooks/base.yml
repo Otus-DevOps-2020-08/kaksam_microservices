@@ -1,0 +1,12 @@
+---
+- name: python install
+  hosts: all
+  become: true
+  gather_facts: False
+
+  tasks:
+    - name: python install
+      apt:
+        update_cache: yes
+        package: python3-minimal
+        state: present

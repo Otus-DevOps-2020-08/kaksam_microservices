@@ -1,16 +1,3 @@
 ---
-- name: Docker install
-  hosts: all
-  become: true
-  gather_facts: False
-
-  tasks:
-    - name: Install docker
-      apt:
-        update_cache: yes
-        package: docker.io
-        state: present
-    - name: Enable mongodb
-      systemd:
-        name: docker
-        enabled: yes
+- import_playbook: base.yml
+- import_playbook: docker.yml
