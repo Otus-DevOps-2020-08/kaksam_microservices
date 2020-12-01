@@ -1,0 +1,22 @@
+{
+    "builders": [
+        {
+            "type": "yandex",
+            "service_account_key_file": "{{ user `yc_sa_key_file` }}",
+            "folder_id": "{{ user `yc_folder_id` }}",
+            "source_image_family": "{{ user `yc_image_id` }}",
+            "image_name": "docker-app-{{timestamp}}",
+            "image_family": "docker-app",
+            "ssh_username": "ubuntu",
+            "subnet_id": "e9bsrg4gap54u53tjrih",
+            "use_ipv4_nat": true,
+            "platform_id": "standard-v1"
+        }
+    ],
+    "provisioners":[
+        {
+            "type": "ansible",
+            "playbook_file": "ansible/playbooks/packer-docker.yml"
+        }
+    ]
+}

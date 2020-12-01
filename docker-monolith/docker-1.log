@@ -1,0 +1,9 @@
+REPOSITORY               TAG                 IMAGE ID            CREATED             SIZE
+kaksam/ubuntu-tmp-file   latest              4f511de9bbe9        56 seconds ago      133MB
+ubuntu                   18.04               2c047404e52d        2 days ago          63.3MB
+nginx                    latest              bc9a0695f571        3 days ago          133MB
+hello-world              latest              bf756fb1ae65        11 months ago       13.3kB
+
+первое, что бросается в глаза, что у контейнера есть state, network settings и image с которого был сделан контейнер
+ну т.е. вывод что images это как iso с linux
+а contaner это уже его конфигурация

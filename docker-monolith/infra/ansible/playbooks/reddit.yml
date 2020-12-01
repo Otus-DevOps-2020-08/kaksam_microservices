@@ -1,0 +1,13 @@
+---
+- name: Install reddit
+  hosts: all
+  become: true
+  tasks:
+    - name: Create docker container
+      docker_container:
+        name: reddit
+        image: kaksam/otus-reddit:1.0
+        detach: yes
+        state: started
+        published_ports:
+          - 9292:9292

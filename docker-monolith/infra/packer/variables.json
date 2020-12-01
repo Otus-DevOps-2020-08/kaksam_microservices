@@ -1,0 +1,6 @@
+{
+    "yc_image_id": "ubuntu-1804-lts",
+    "yc_sa_key_file": "/home/h1mself/yandex-cloud/key.json",
+    "yc_folder_id": "b1g4k3l9l3nhjn1c2h4e",
+    "ssh_private_key_file": "/home/h1mself/.ssh/appuser"
+}
