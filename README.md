@@ -1,6 +1,14 @@
 # kaksam_microservices
 kaksam microservices repository
 
+**HW #14**
+
+    * Studied docker as microservice
+    * studied docker network and using ENV variable
+    * reduce images size using alpine iamge
+    * use docker volume for mongo db
+
+
 **HW #13**
 
     * Install docker, docker-compose, dcoker-machine
